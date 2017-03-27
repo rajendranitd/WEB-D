@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<style type="text/css">
+	body{
+		background-image: url(1.jpg);
+		font-family: arial;
+		margin: 0;
+
+	}
+	header h1{
+		color: white;
+		margin: 0;
+		display: inline;
+		font-size: 30px;
+		padding: 30px;
+		
+
+	}
+	header{
+		background-image: url(2.png);
+		padding: 10px 0 0 15px;
+
+
+	}
+	nav ul{
+		display: inline;
+		margin: 0;
+		padding: 0 0 0 500px;
+	}
+	nav ul li {
+		
+		display: inline-block;
+		padding: 3px 15px;
+		margin: 10px;
+
+	}
+	a{
+		color: white;
+	}
+	a:hover {
+    background-color: #f442ce;
+
+ 	}
+	p{
+		color: white;
+		padding: 0px 0 0 350px;
+		font-size: 40px;
+
+	}
+	
+	
+	form{
+		color: white;
+		font-size: 30px;
+		position: relative;
+		left:30%;
+		padding-top:20px;
+	}
+	input{
+		padding: 5px;
+		margin: 10px;
+		font-size: 20px;
+		
+	}
+	div.login{
+		background-color: black;
+		opacity: 0.5;
+		margin-left:300px;
+		margin-right:300px;
+		padding-bottom:50px;
+
+
+	}
+	#login {
+		display:flex;
+		align-items: center;
+
+	}
+	#login input {
+		cursor: pointer;
+	}
+
+	#login a {
+		text-decoration: none;
+
+	}
+	.login #status {
+		font-size: 18px;
+		color: white;
+		position: relative;
+		left:32%;
+		padding-top:50px;
+
+	}
+	</style>
+
+	<script>
+	  function verify() {
+	  	var username = document.getElementById("username").value;
+	  	var password = document.getElementById("password").value;
+
+	  	if (username.length == 0) {
+	  		document.getElementById("status").innerHTML = "username cannot be empty";
+	  		return false;
+	  	}
+	  	else if(password.length == 0) {
+	  		document.getElementById("status").innerHTML = "password cannot be empty";
+	  		return false;
+	  	}
+	  	else {
+	  		return true;
+	  	}
+	  }
+	</script>
+
+</head>
+<body>
+
+
+<header>
+<nav>
+<a href="index.html">
+  <img src="logo.png"  height="75" width="75">
+</a>
+
+<h1><a href="index.html" style="text-decoration:none">Student Portal</a></h1>
+	<ul>
+		<li><h3><a href="index.html" style="text-decoration:none">HOME</a></h3></li>
+		<li><h3><a href="student.html" style="text-decoration:none">STUDENT</a></h3></li>
+		<li><h3><a href="admin.html" style="text-decoration:none"> ADMIN</a></h3></li>
+
+	</ul>
+
+</nav>
+</header>
+
+<div>
+<p>WELCOME TO ADMIN LOGIN PAGE</p>
+</div>
+
+<div class="login">
+<form onsubmit="return verify()">
+	User Name:<br>
+	<input type="text" name="username" id="username">
+	<br>
+	Password:<br>
+	<input type="Password" name="pass" id="password">
+	<br>
+	<div id="login">
+		<input type="submit"  value="Login">
+	</div>
+	
+</form>
+<div id="status">
+
+</div>
+
+</div>
+
+
+
+
+</body>
+</html>

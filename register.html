@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Portal</title>
+	
+	<style type="text/css">
+	body{
+		background-image: url(1.jpg);
+		font-family: arial;
+		margin: 0;
+
+	}
+	header h1{
+		color: white;
+		margin: 0;
+		display: inline;
+		font-size: 30px;
+		padding: 30px;
+		
+
+	}
+	header{
+		background-image: url(2.png);
+		padding: 10px 0 0 15px;
+
+
+	}
+	nav ul{
+		display: inline;
+		margin: 0;
+		padding: 0 0 0 500px;
+	}
+	nav ul li {
+		
+		display: inline-block;
+		padding: 3px 15px;
+		margin: 10px;
+
+	}
+	a{
+		color: white;
+	}
+	a:hover {
+    background-color: #f442ce;
+
+ 	}
+	p{
+		color: white;
+		padding: 0 0 0 350px;
+		font-size: 40px;
+
+	}
+	.options {
+		height:30px;
+		margin-bottom: 10px;
+	}
+	
+	
+	
+	input{
+		padding: 5px;
+		margin: 10px;
+		font-size: 20px;
+	}
+
+	#status {
+		font-size: 18px;
+		color:white;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		color: #D50000;
+		
+		
+
+	}
+
+	#status_final {
+		font-size: 18px;
+		color:white;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		color: #D50000;
+		display:none;
+	}
+	#action input {
+		cursor: pointer;
+	}
+	#branch {
+		margin-left: 10px;
+	}
+	form {
+		background-color: black;
+		opacity: 0.5;
+		margin-left:250px;
+		margin-right:250px;
+		color: white;
+		padding-left:250px;
+	}
+
+	.age {
+		color: white;
+		font-size: 24px;
+		margin-bottom: 5px;
+	}
+	
+	</style>
+
+	<script>
+
+		document.addEventListener('DOMContentLoaded',function(){
+
+			function getAge(dateString) 
+			{
+			    var today = new Date();
+			    var birthDate = new Date(dateString);
+			    var age = today.getFullYear() - birthDate.getFullYear();
+			    var m = today.getMonth() - birthDate.getMonth();
+			    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+			    {
+			        age--;
+			    }
+			    return age;
+			}
+
+			function areAllDigitsTheSame(phoneNumber) {
+			    return /^\D*(\d)(?:\D*|\1)*$/.test(phoneNumber);
+			}
+
+			function isValidMobNo(mobno) {
+				var regex = /^[0-9]*$/;
+				if (!regex.test(mobno)) {
+					return false;
+				} else if (mobno.length !== 10) {
+					return false;
+				} else if(mobno.charAt(0)==='1' || mobno.charAt(0)==='2' || mobno.charAt(0)==='3' || mobno.charAt(0)==='4' || mobno.charAt(0)==='5' || mobno.charAt(0)==='6') {
+					return false;
+				} else if (areAllDigitsTheSame(mobno)) {
+					return false;
+				} else {
+					return true;
+				}
+				
+			}
+
+			var rollno = {
+				"BT": "/BT/",
+				"CSE": "/CSE/",
+				"CHE": "/CHE/",
+				"EE": "/EE/",
+				"ECE": "/ECE/",
+				"IT": "/IT/",
+				"ME": "/ME/",
+				"MME": "/MME/"			
+			}
+
+			document.getElementById("roll").value = "/BT/";
+			document.getElementById("username").addEventListener("focusout", function() {
+				var error = document.getElementsByClassName("name_status");
+				if (document.getElementById("username").value.length <= 6) {
+					error[0].innerHTML = "Please enter name of atleast 6 characters";
+				}
+				else {
+					error[0].innerHTML = "";
+				}
+
+			});
+
+			document.getElementById("bday").addEventListener("focusout", function() {
+				var error = document.getElementsByClassName("bday_status");
+
+				if (document.getElementById("bday").value === "") {
+					error[0].innerHTML = "Please enter a valid date";
+				}
+				else {
+					error[0].innerHTML = "";
+					var bday = document.getElementById("bday").value;
+					var age = getAge(bday);
+					document.getElementById("age").innerHTML = "Age : " + age + " years";
+				}
+
+			});
+
+			document.getElementById("regno").addEventListener("focusout", function() {
+				var error = document.getElementsByClassName("regno_status");
+				var regno = document.getElementById("regno").value;
+				regno = regno.trim();
+				var regex = /^[0-9]*$/;
+			
+				if (regno.length === 8 && (regex.test(regno)) && regno.charAt(1)==='0' && regno.charAt(4) === '0') {
+					error[0].innerHTML = "";
+					var roll_no = "";
+					var yr = regno.substring(2,4);
+					var sub = rollno[document.getElementById("branch").value];
+					roll_no = yr + sub;
+					document.getElementById("roll").value = roll_no;
+
+				}
+				else {
+					error[0].innerHTML = "Rgistration number must be a 8 digit number of the form $0$$0$$$";
+				}
+			});
+
+
+
+			document.getElementById("branch").addEventListener("change", function() {
+				var regno = document.getElementById("regno").value;
+				if (regno.length === 0) {
+					document.getElementById("roll").value = rollno[this.value];
+				} else {
+					var roll_no = "";
+					var yr = regno.substring(2,4);
+					var sub = rollno[document.getElementById("branch").value];
+					roll_no = yr + sub;
+					document.getElementById("roll").value = roll_no;
+				}	
+			});
+
+			document.getElementById("mobno").addEventListener("focusout", function() {
+				var mobno = document.getElementById("mobno").value;
+				var regex = /^[0-9]*$/;
+				if (!isValidMobNo(mobno)) {
+
+					document.getElementsByClassName("mobno_status")[0].innerHTML = "Please enter a valid mobile number";
+				}
+				else {
+					document.getElementsByClassName("mobno_status")[0].innerHTML = "";
+				}
+			});
+
+			document.getElementById("roll").addEventListener("focusout", function() {
+				var parts = document.getElementById("roll").value.split("/");
+				console.log(parts);
+				var regex = /^[0-9]*$/;
+				
+				console.log(regex.test(parts[1].trim()));
+				console
+				if (regex.test(parts[2].trim()) === true) {
+					document.getElementsByClassName("rollno_status")[0].innerHTML = "";
+				} else {
+					document.getElementsByClassName("rollno_status")[0].innerHTML = "Please enter a valid roll number";					
+				}
+			});	
+
+			document.getElementById("email").addEventListener("focusout", function() {
+				var email = document.getElementById("email").value;
+				if (email.length === 0) {
+
+					document.getElementsByClassName("email_status")[0].innerHTML = "Please enter a valid email";
+				}
+				else {
+					document.getElementsByClassName("email_status")[0].innerHTML = "";
+				}
+			});
+
+			document.getElementById("password").addEventListener("focusout", function() {
+				var password = document.getElementById("password").value;
+				if (password.length < 8) {
+
+					document.getElementsByClassName("pass_status")[0].innerHTML = "Please enter a valid password of length atleast 8";
+				}
+				else {
+					document.getElementsByClassName("pass_status")[0].innerHTML = "";
+				}
+			});
+
+			document.getElementById("rpassword").addEventListener("keyup", function() {
+				var p = document.getElementById("password").value;
+				var rp = document.getElementById("rpassword").value;
+				if (p !== rp) {
+					document.getElementsByClassName("rpass_status")[0].innerHTML = "passwords do not match";
+				}
+				else {
+					document.getElementsByClassName("rpass_status")[0].innerHTML = "passwords match";
+				}
+			});
+
+
+
+
+
+
+
+
+
+
+
+
+		});
+
+		
+	    function verify() {
+			var username = document.getElementById("username").value;
+			var pass = document.getElementById("password").value;
+			var rpass = document.getElementById("rpassword").value;
+			var bday = document.getElementById("bday").value;
+			var branch = document.getElementById("branch").value;
+			var roll = document.getElementById("roll").value;
+			var regno = document.getElementById("regno").value;
+			var mobno = document.getElementById("mobno").value;
+			var email = document.getElementById("email").value;
+
+			var status = document.getElementById("status_final");
+			
+
+			if (username.length == 0) {
+				status.style.display = "block";
+				status.innerHTML = "Username cannot be empty";
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+				return false;
+
+			} 
+			
+			else if(bday.length == 0) {
+				status.style.display = "block";
+				status.innerHTML = "Birth date cannot be empty";
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+				return false;
+			}
+			
+			else if(roll.length == 0 ) {
+				status.style.display = "block";
+				status.innerHTML = "Roll no. cannot be empty";
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+				return false;
+			}
+			else if(regno.length != 8 || isNAN(regno) ) {
+				status.style.display = "block";
+				status.innerHTML = "Registration number cannot be empty and should be a number";
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+				return false;
+			}
+			else if(mobno.length  != 10 || isNAN(mobno)) {
+				status.style.display = "block";
+				status.innerHTML = "Mobile number cannot be empty and should be a valid mobile number";
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+				return false;
+			}
+			else if(email.length == 0) {
+				status.style.display = "block";
+				status.innerHTML = "Email cannot be empty";
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+				return false;
+			}
+			else if(pass.length <5) {
+				status.style.display = "block";
+				status.innerHTML = "Password cannot be empty and minimum 5";
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+				return false;
+			}
+			else if(pass !== rpass) {
+				status.style.display = "block";
+				status.innerHTML = "Passwords do not match";
+				document.body.scrollTop = document.documentElement.scrollTop = 0;
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
+
+	</script>
+
+</head>
+<body>
+
+
+<header>
+<nav>
+<a href="index.html">
+  <img src="logo.png"  height="75" width="75">
+</a>
+<h1><a href="index.html"style="text-decoration:none">Student Portal</a></h1>
+	<ul>
+		<li><h3><a href="index.html" style="text-decoration:none">HOME</a></h3></li>
+		<li><h3><a href="student.html" style="text-decoration:none">STUDENT</a></h3></li>
+		<li><h3><a href="admin.html" style="text-decoration:none"> ADMIN</a></h3></li>
+
+	</ul>
+
+</nav>
+</header>
+
+<div>
+<p>WELCOME TO STUDENT REGISTRATION PAGE</p>
+</div>
+
+
+
+<form onsubmit = "return verify()">
+
+	<div id = "status_final">
+	 hello
+	</div>
+	
+	Student Name:<br>
+	<input type="text" name="Name" id="username">
+	<br>	
+	<div class="name_status" id="status"> 
+	</div>
+	Gender:<br>
+	<input type="radio" name="gender" value="Male" checked="checked">Male
+	<input type="radio" name="gender" value="Female"> Female<br>
+	Birthday:<br>
+	<input type="date" name="bday" id="bday">
+    <br>
+    <div class="bday_status" id="status">
+	</div>
+	<div class="age" id="age">
+	</div>
+	Branch:<br><br>
+	<select class="options" id="branch">
+	  <option value="BT" class="item">Biotechnology</option>
+	  <option value="CSE" class="item">Computer Science and Engineering</option>
+	  <option value="CHE" class="item">Chemical Engineering</option>
+	  <option value="EE" class="item">Electrical Engineering</option>
+	  <option value="ECE" class="item">Electronics and Communication Engineering</option>
+	  <option value="IT" class="item">Information Technology</option>
+	  <option value="ME" class="item">Mechanical Engineering</option>
+	  <option value="MME" class="item">Matellurgical and Materials Engineering</option>
+	</select> <br>
+	
+	Registration-No:<br>
+	<input type="text" name="regno" id="regno">
+	<br>
+	<div class="regno_status" id="status">
+	</div>
+	Roll-No:<br>
+	<input type="text" name="rollno" id="roll">
+	<br>
+	<div class="rollno_status" id="status">
+	</div>
+	Moble:<br>
+	<input type="text" name="mobno" id="mobno">
+	<br>
+	<div class="mobno_status" id="status">
+	</div>
+	Email:<br>
+	<input type="Email" name="email" id="email">
+	<br>
+	<div class="email_status" id="status">
+	</div>
+	Password:<br>
+	<input type="Password" name="pass" id="password">
+	<br>
+	<div class="pass_status" id="status">
+	</div>
+	Re-type Password:<br>
+	<input type="Password" name="rpass" id="rpassword">
+	<br>
+	<div class="rpass_status" id="status">
+	</div>
+	<div id="action">
+	 <input type = "submit" value = "register"></div>
+	
+	</div>
+</form>
+</body>
+</html>
